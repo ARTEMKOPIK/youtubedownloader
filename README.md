@@ -13,3 +13,16 @@ python app.py
 ```
 
 Open your browser at `http://localhost:5000` and enter a YouTube URL. Choose the desired quality (video resolution or audio) and download the file.
+
+## Updating dependencies
+
+To update Python package versions:
+
+1. Edit `requirements.txt` and set the desired versions, e.g. `Flask==3.0.0`.
+2. Install the new versions:
+
+```bash
+pip install --upgrade -r requirements.txt
+```
+
+This ensures the project uses the specified versions.
