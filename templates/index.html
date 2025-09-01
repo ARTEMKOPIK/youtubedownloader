@@ -20,7 +20,7 @@
             </ul>
           {% endif %}
         {% endwith %}
-        <form action="{{ url_for('download') }}" method="post" class="download-form">
+        <form id="download-form" action="#" method="post" class="download-form">
             <input type="text" name="url" placeholder="Enter YouTube URL" required>
             <select name="quality">
                 <option value="best" selected>Best Video</option>
@@ -31,6 +31,42 @@
             </select>
             <button type="submit">Download</button>
         </form>
+        <div id="progress-container" class="progress" style="display:none;">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+        <div id="status"></div>
     </div>
+    <script>
+    document.getElementById('download-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        fetch('{{ url_for('start_download') }}', {method: 'POST', body: formData})
+            .then(res => res.json())
+            .then(data => {
+                if (!data.job_id) {
+                    document.getElementById('status').textContent = data.error || 'Error starting download';
+                    return;
+                }
+                const jobId = data.job_id;
+                document.getElementById('progress-container').style.display = 'block';
+                const interval = setInterval(() => {
+                    fetch('/progress/' + jobId)
+                        .then(r => r.json())
+                        .then(info => {
+                            if (info.progress !== undefined) {
+                                document.getElementById('progress-bar').style.width = info.progress + '%';
+                            }
+                            document.getElementById('status').textContent = info.status || '';
+                            if (info.status === 'finished') {
+                                clearInterval(interval);
+                                window.location = '/file/' + jobId;
+                            } else if (info.status === 'error') {
+                                clearInterval(interval);
+                            }
+                        });
+                }, 1000);
+            });
+    });
+    </script>
 </body>
 </html>

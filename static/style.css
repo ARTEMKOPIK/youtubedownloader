@@ -51,3 +51,22 @@ button:hover {
     color: #ff512f;
     margin-bottom: 1rem;
 }
+
+.progress {
+    width: 100%;
+    background-color: #eee;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.progress-bar {
+    height: 16px;
+    background-color: #ff512f;
+    width: 0%;
+    transition: width 0.3s;
+}
+
+#status {
+    margin-top: 0.5rem;
+}
