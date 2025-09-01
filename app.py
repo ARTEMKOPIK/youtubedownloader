@@ -39,8 +39,12 @@ def download():
             )
             ydl_opts['merge_output_format'] = 'mp4'
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=True)
-            filename = ydl.prepare_filename(info)
+            try:
+                info = ydl.extract_info(url, download=True)
+                filename = ydl.prepare_filename(info)
+            except yt_dlp.utils.DownloadError:
+                flash('Failed to download video. Ensure ffmpeg is installed.')
+                return redirect(url_for('index'))
         return send_file(filename, as_attachment=True)
 
 if __name__ == '__main__':

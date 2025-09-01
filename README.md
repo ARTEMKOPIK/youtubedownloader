@@ -4,6 +4,9 @@ Simple web application built with Flask and yt-dlp to download videos or audio f
 
 ## Setup
 
+This application requires [ffmpeg](https://ffmpeg.org) to merge video and audio streams.
+Ensure it is installed and available in your PATH before running the app.
+
 ```bash
 pip install -r requirements.txt
 python app.py
