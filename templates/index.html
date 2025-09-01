@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>YouTube Downloader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -17,8 +20,15 @@
             </ul>
           {% endif %}
         {% endwith %}
-        <form action="{{ url_for('download') }}" method="post">
+        <form action="{{ url_for('download') }}" method="post" class="download-form">
             <input type="text" name="url" placeholder="Enter YouTube URL" required>
+            <select name="quality">
+                <option value="best" selected>Best Video</option>
+                <option value="1080p">1080p</option>
+                <option value="720p">720p</option>
+                <option value="480p">480p</option>
+                <option value="audio">Audio (MP3)</option>
+            </select>
             <button type="submit">Download</button>
         </form>
     </div>
