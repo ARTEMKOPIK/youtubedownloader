@@ -13,6 +13,7 @@ def index():
 @app.route('/download', methods=['POST'])
 def download():
     url = request.form.get('url')
+    quality = request.form.get('quality', 'best')
     if not url:
         flash('Please provide a YouTube URL.')
         return redirect(url_for('index'))
@@ -23,6 +24,20 @@ def download():
             'outtmpl': os.path.join(tmpdir, '%(title)s.%(ext)s'),
             'quiet': True,
         }
+        if quality == 'audio':
+            ydl_opts.update({
+                'format': 'bestaudio/best',
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': '192',
+                }]
+            })
+        elif quality in {'1080p', '720p', '480p'}:
+            ydl_opts['format'] = (
+                f"bestvideo[height<={quality.rstrip('p')}]" + "+bestaudio/best"
+            )
+            ydl_opts['merge_output_format'] = 'mp4'
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
             filename = ydl.prepare_filename(info)
