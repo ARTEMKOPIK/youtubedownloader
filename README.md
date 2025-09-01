@@ -13,3 +13,11 @@ python app.py
 ```
 
 Open your browser at `http://localhost:5000` and enter a YouTube URL. Choose the desired quality (video resolution or audio) and download the file.
+
+## Testing
+
+Run the test suite with:
+
+```bash
+pytest
+```
